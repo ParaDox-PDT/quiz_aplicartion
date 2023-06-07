@@ -20,26 +20,30 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Choose subject"),
       ),
       body: ListView(
-        children: List.generate(MyRepository.quizData.length, (index) {
-          SubjectModel subject = MyRepository.quizData[index];
-          return SubjectItem(
-            questionsCount: "${subject.questions.length} ta",
-            color: subject.subjectColor,
-            subjectTitle: subject.subjectName,
-            level: subject.level.name,
-            time: "${subject.quizTime / 60} minut",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return QuizDetailScreen();
-                  },
-                ),
-              );
-            },
-          );
-        }),
+        children: [
+          ...List.generate(MyRepository.quizData.length, (index) {
+            SubjectModel subject = MyRepository.quizData[index];
+            return SubjectItem(
+              questionsCount: "${subject.questions.length} ta",
+              color: subject.subjectColor,
+              subjectTitle: subject.subjectName,
+              level: subject.level.name,
+              time: "${subject.quizTime / 60} minut",
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return QuizDetailScreen(
+                        subject: subject,
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          })
+        ],
       ),
     );
   }

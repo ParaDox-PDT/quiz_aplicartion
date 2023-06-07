@@ -9,9 +9,11 @@ class SubjectModel {
   final QuizLevel level;
   final String description;
   final Color subjectColor;
+  final String subjectImage;
   final List<QuestionModel> questions;
 
   SubjectModel({
+    required this.subjectImage,
     required this.description,
     required this.subjectColor,
     required this.level,

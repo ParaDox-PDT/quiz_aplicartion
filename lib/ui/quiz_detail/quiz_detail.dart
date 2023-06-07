@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:n8_default_project/models/subject_model.dart';
+import 'package:n8_default_project/ui/quiz_detail/widgets/subject_image_view.dart';
 import 'package:n8_default_project/ui/quiz_detail/widgets/time_container.dart';
 import 'package:n8_default_project/ui/widgets/global_appbar.dart';
 import 'package:n8_default_project/ui/widgets/global_button.dart';
@@ -7,7 +9,12 @@ import 'package:n8_default_project/utils/colors.dart';
 import 'package:n8_default_project/utils/icons.dart';
 
 class QuizDetailScreen extends StatefulWidget {
-  const QuizDetailScreen({Key? key}) : super(key: key);
+  QuizDetailScreen({
+    Key? key,
+    required this.subject,
+  }) : super(key: key);
+
+  final SubjectModel subject;
 
   @override
   State<QuizDetailScreen> createState() => _QuizDetailScreenState();
@@ -21,7 +28,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
         onTap: () {
           Navigator.pop(context);
         },
-        title: "Math quiz info",
+        title: "${widget.subject.subjectName} quiz info",
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 22),
@@ -39,11 +46,31 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
                 child: ListView(
                   padding: const EdgeInsets.all(32),
                   children: [
-                    Text('''
-                    The quizzes consists of questions carefully designed to help you self-assess your comprehension of the information presented on the topics covered in the module. 
-After responding to a question, click on the "Next Question" button at the bottom to go to the next questino. After responding to the 8th question, click on "Close" on the top of the window to exit the quiz.
-If you select an incorrect response for a question, you can try again until you get the correct response. If you retake the quiz, the questions and their respective responses will be randomized.
-                    ''')
+                    SubjectImageView(iconPath: widget.subject.subjectImage),
+                    const SizedBox(height: 16),
+                    _getRichText(
+                      "Total Questions:  ",
+                      widget.subject.questions.length.toString(),
+                    ),
+                    const SizedBox(height: 12),
+                    _getRichText(
+                      "Total time:  ",
+                      "${widget.subject.quizTime ~/ 60}: ${widget.subject.quizTime % 60}",
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Instructions:",
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      widget.subject.description,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontWeight: FontWeight.w400, letterSpacing: 1.2),
+                    ),
                   ],
                 ),
               ),
@@ -75,6 +102,27 @@ If you select an incorrect response for a question, you can try again until you 
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _getRichText(String text1, String text2) {
+    return RichText(
+      text: TextSpan(
+        text: text1,
+        style: Theme.of(context)
+            .textTheme
+            .titleSmall!
+            .copyWith(fontWeight: FontWeight.w400),
+        children: <TextSpan>[
+          TextSpan(
+            text: text2,
+            style: Theme.of(context)
+                .textTheme
+                .titleSmall!
+                .copyWith(fontWeight: FontWeight.w700),
+          ),
+        ],
       ),
     );
   }
