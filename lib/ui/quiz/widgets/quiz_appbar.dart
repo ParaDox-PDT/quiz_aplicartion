@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../utils/colors.dart';
-import '../../utils/icons.dart';
+import '../../../utils/colors.dart';
+import '../../../utils/icons.dart';
 
-class GlobalAppBar extends StatelessWidget implements PreferredSize {
-  const GlobalAppBar({
+class QuizAppBar extends StatelessWidget implements PreferredSize {
+  const QuizAppBar({
     Key? key,
     required this.onTap,
     required this.title,
+    required this.onSubmitTap,
   }) : super(key: key);
 
   final VoidCallback onTap;
+  final VoidCallback onSubmitTap;
   final String title;
 
   @override
@@ -46,6 +48,29 @@ class GlobalAppBar extends StatelessWidget implements PreferredSize {
                     .textTheme
                     .titleMedium!
                     .copyWith(fontSize: 18),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: onSubmitTap,
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: AppColors.C_0E81B4,
+                      width: 1,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "Submit",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: AppColors.textColor),
+                    ),
+                  ),
+                ),
               )
             ],
           ),

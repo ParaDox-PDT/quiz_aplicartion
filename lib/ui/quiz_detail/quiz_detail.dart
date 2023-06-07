@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:n8_default_project/models/subject_model.dart';
+import 'package:n8_default_project/ui/quiz/quiz_screen.dart';
 import 'package:n8_default_project/ui/quiz_detail/widgets/subject_image_view.dart';
 import 'package:n8_default_project/ui/quiz_detail/widgets/time_container.dart';
 import 'package:n8_default_project/ui/widgets/global_appbar.dart';
 import 'package:n8_default_project/ui/widgets/global_button.dart';
 import 'package:n8_default_project/utils/colors.dart';
 import 'package:n8_default_project/utils/icons.dart';
+
+import '../../utils/utility_functions.dart';
 
 class QuizDetailScreen extends StatefulWidget {
   QuizDetailScreen({
@@ -34,6 +37,10 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
         padding: const EdgeInsets.only(top: 22),
         child: Stack(
           children: [
+            Container(
+
+            ),
+
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
@@ -48,14 +55,17 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
                   children: [
                     SubjectImageView(iconPath: widget.subject.subjectImage),
                     const SizedBox(height: 16),
-                    _getRichText(
+                    getRichText(
                       "Total Questions:  ",
                       widget.subject.questions.length.toString(),
+                      context,
+
                     ),
                     const SizedBox(height: 12),
-                    _getRichText(
+                    getRichText(
                       "Total time:  ",
                       "${widget.subject.quizTime ~/ 60}: ${widget.subject.quizTime % 60}",
+                      context,
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -87,12 +97,22 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TimeContainer(timeText: "15:00"),
+                    TimeContainer(
+                        timeText: "${widget.subject.quizTime ~/ 60}: ${widget.subject.quizTime % 60}"),
                     const SizedBox(width: 32),
                     Expanded(
                       child: GlobalButton(
                         title: "Start Quiz",
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return QuizScreen(subject: widget.subject);
+                              },
+                            ),
+                          );
+                        },
                         color: AppColors.C_0E81B4,
                       ),
                     )
@@ -106,24 +126,4 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
     );
   }
 
-  Widget _getRichText(String text1, String text2) {
-    return RichText(
-      text: TextSpan(
-        text: text1,
-        style: Theme.of(context)
-            .textTheme
-            .titleSmall!
-            .copyWith(fontWeight: FontWeight.w400),
-        children: <TextSpan>[
-          TextSpan(
-            text: text2,
-            style: Theme.of(context)
-                .textTheme
-                .titleSmall!
-                .copyWith(fontWeight: FontWeight.w700),
-          ),
-        ],
-      ),
-    );
-  }
 }
