@@ -12,4 +12,8 @@ class AppImages {
   static const String react = "assets/svg/react.svg";
   static const String arrowBack = "assets/svg/arrow_back.svg";
   static const String clock = "assets/svg/clock.svg";
+  static const String progressBar = "assets/svg/progress_bar.svg";
+  static const String timerRight = "assets/svg/timer_right.svg";
+  static const String timerLeft = "assets/svg/timer_left.svg";
+  static const String retry = "assets/svg/retry.svg";
 }

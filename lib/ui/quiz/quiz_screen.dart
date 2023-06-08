@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:n8_default_project/models/subject_model.dart';
+import 'package:n8_default_project/ui/quiz/widgets/answer_item.dart';
 import 'package:n8_default_project/ui/quiz/widgets/bottom_buttons_view.dart';
 import 'package:n8_default_project/ui/quiz/widgets/my_progress_indicator.dart';
 import 'package:n8_default_project/ui/quiz/widgets/quiz_appbar.dart';
+import 'package:n8_default_project/ui/quiz_result/quiz_result.dart';
 import 'package:n8_default_project/utils/colors.dart';
 import 'package:n8_default_project/utils/utility_functions.dart';
 
@@ -91,22 +93,49 @@ class _QuizScreenState extends State<QuizScreen> {
               child: Column(
                 children: [
                   Expanded(
-                      child: ListView(
-                    padding: const EdgeInsets.all(28),
-                    children: [
-                      getRichTextForCount("Q.3/", "5", context),
-                      const SizedBox(height: 12),
-                      Text(
-                        "wer",
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(fontSize: 17),
-                      )
-                    ],
-                  )),
+                    child: ListView(
+                      padding: const EdgeInsets.all(28),
+                      children: [
+                        getRichTextForCount("Q.3/", "5", context),
+                        const SizedBox(height: 12),
+                        Text(
+                          "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents two lines which are",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(fontSize: 15),
+                        ),
+                        AnswerItem(
+                          isSelected: true,
+                          variantName: "A",
+                          answerText:
+                              "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents t",
+                          onTap: () {},
+                        ),
+                        AnswerItem(
+                          isSelected: false,
+                          variantName: "A",
+                          answerText:
+                              "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents t",
+                          onTap: () {},
+                        ),
+                        AnswerItem(
+                          isSelected: false,
+                          variantName: "A",
+                          answerText:
+                              "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents t",
+                          onTap: () {},
+                        ),
+                      ],
+                    ),
+                  ),
                   BottomButtonViews(
-                    onNextTap: () {},
+                    onNextTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return QuizResult();
+                      }));
+                    },
                     onPreviousTap: () {},
                   )
                 ],
