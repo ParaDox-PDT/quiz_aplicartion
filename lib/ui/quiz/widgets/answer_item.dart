@@ -25,8 +25,7 @@ class AnswerItem extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+        contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
         title: Row(
           children: [
             Text(

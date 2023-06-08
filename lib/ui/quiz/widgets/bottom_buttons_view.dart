@@ -8,9 +8,12 @@ class BottomButtonViews extends StatelessWidget {
     Key? key,
     required this.onNextTap,
     required this.onPreviousTap,
+    required this.onNextTapVisibility, required this.onPreviousTapVisibility,
   }) : super(key: key);
 
   final VoidCallback onNextTap;
+  final bool onNextTapVisibility;
+  final bool onPreviousTapVisibility;
   final VoidCallback onPreviousTap;
 
   @override
@@ -23,15 +26,21 @@ class BottomButtonViews extends StatelessWidget {
         children: [
           SizedBox(
             width: width / 4,
-            child: GlobalButton(
-                title: "Previous",
-                onTap: onPreviousTap,
-                color: AppColors.C_273032),
+            child: Visibility(
+              visible: onPreviousTapVisibility,
+              child: GlobalButton(
+                  title: "Previous",
+                  onTap: onPreviousTap,
+                  color: AppColors.C_273032),
+            ),
           ),
           SizedBox(
             width: width / 4,
-            child: GlobalButton(
-                title: "Next", onTap: onNextTap, color: AppColors.C_0E81B4),
+            child: Visibility(
+              visible: onNextTapVisibility,
+              child: GlobalButton(
+                  title: "Next", onTap: onNextTap, color: AppColors.C_0E81B4),
+            ),
           ),
         ],
       ),

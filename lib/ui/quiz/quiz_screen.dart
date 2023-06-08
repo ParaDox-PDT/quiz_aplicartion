@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:n8_default_project/models/question_model.dart';
 import 'package:n8_default_project/models/subject_model.dart';
 import 'package:n8_default_project/ui/quiz/widgets/answer_item.dart';
 import 'package:n8_default_project/ui/quiz/widgets/bottom_buttons_view.dart';
-import 'package:n8_default_project/ui/quiz/widgets/my_progress_indicator.dart';
 import 'package:n8_default_project/ui/quiz/widgets/quiz_appbar.dart';
-import 'package:n8_default_project/ui/quiz_result/quiz_result.dart';
+import 'package:n8_default_project/ui/quiz/widgets/quiz_screen_top.dart';
 import 'package:n8_default_project/utils/colors.dart';
 import 'package:n8_default_project/utils/utility_functions.dart';
-
-import '../../utils/icons.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({
@@ -24,13 +21,36 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+
+  List<QuestionModel> subjectQuestions = [];
+
+  int currentQuestionIndex = 0;
+  int selectedAnswerIndex = 0;
+
+  Map<int, int> answersMap = {};
+
+  @override
+  void initState() {
+    subjectQuestions = widget.subject.questions;
+
+    for (int i = 0; i < subjectQuestions.length; i++) {
+      answersMap[i] = 0;
+    }
+
+    print("Answers Initial Set:$answersMap");
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: QuizAppBar(
-        onSubmitTap: () {},
+        onSubmitTap: () {
+
+        },
         onTap: () {
           Navigator.pop(context);
         },
@@ -39,47 +59,10 @@ class _QuizScreenState extends State<QuizScreen> {
       body: Column(
         children: [
           const SizedBox(height: 12),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30),
-            height: height * 0.125,
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Chapter text",
-                  textAlign: TextAlign.start,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleLarge!
-                      .copyWith(fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(height: 7),
-                Row(
-                  children: [
-                    Text(
-                      "${widget.subject.subjectName} chapter",
-                      style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                          color: AppColors.textColor.withOpacity(0.5)),
-                    ),
-                    const Spacer(),
-                    SvgPicture.asset(
-                      AppImages.clock,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      "07:28",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall!
-                          .copyWith(color: AppColors.textColor),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 7),
-                MyProgressIndicator(rate: 0.67),
-              ],
-            ),
+          QuizScreenTop(
+            rate: 0.67,
+            subjectName: widget.subject.subjectName,
+            height: height,
           ),
           Expanded(
             child: Container(
@@ -96,47 +79,97 @@ class _QuizScreenState extends State<QuizScreen> {
                     child: ListView(
                       padding: const EdgeInsets.all(28),
                       children: [
-                        getRichTextForCount("Q.3/", "5", context),
+                        getRichTextForCount("Q.${currentQuestionIndex + 1}/",
+                            "${subjectQuestions.length}", context),
                         const SizedBox(height: 12),
                         Text(
-                          "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents two lines which are",
+                          subjectQuestions[currentQuestionIndex].questionText,
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
                               .copyWith(fontSize: 15),
                         ),
                         AnswerItem(
-                          isSelected: true,
-                          variantName: "A",
+                          isSelected: selectedAnswerIndex == 1,
+                          variantName: "A.",
                           answerText:
-                              "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents t",
-                          onTap: () {},
+                              subjectQuestions[currentQuestionIndex].answer1,
+                          onTap: () {
+                            setState(() {
+                              selectedAnswerIndex = 1;
+                            });
+                            answersMap[currentQuestionIndex] =
+                                selectedAnswerIndex;
+                          },
                         ),
                         AnswerItem(
-                          isSelected: false,
-                          variantName: "A",
+                          isSelected: selectedAnswerIndex == 2,
+                          variantName: "B.",
                           answerText:
-                              "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents t",
-                          onTap: () {},
+                              subjectQuestions[currentQuestionIndex].answer2,
+                          onTap: () {
+                            setState(() {
+                              selectedAnswerIndex = 2;
+                            });
+                            answersMap[currentQuestionIndex] =
+                                selectedAnswerIndex;
+                          },
                         ),
                         AnswerItem(
-                          isSelected: false,
-                          variantName: "A",
+                          isSelected: selectedAnswerIndex == 3,
+                          variantName: "C.",
                           answerText:
-                              "Question Graphically, the pair of equations 7x – y = 5; 21x – 3y = 10 represents t",
-                          onTap: () {},
+                              subjectQuestions[currentQuestionIndex].answer3,
+                          onTap: () {
+                            setState(() {
+                              selectedAnswerIndex = 3;
+                            });
+                            answersMap[currentQuestionIndex] =
+                                selectedAnswerIndex;
+                          },
+                        ),
+                        AnswerItem(
+                          isSelected: selectedAnswerIndex == 4,
+                          variantName: "D.",
+                          answerText:
+                              subjectQuestions[currentQuestionIndex].answer4,
+                          onTap: () {
+                            setState(() {
+                              selectedAnswerIndex = 4;
+                            });
+                            answersMap[currentQuestionIndex] =
+                                selectedAnswerIndex;
+                          },
                         ),
                       ],
                     ),
                   ),
                   BottomButtonViews(
+                    onNextTapVisibility:
+                        !(currentQuestionIndex == subjectQuestions.length - 1),
+                    onPreviousTapVisibility: !(currentQuestionIndex == 0),
                     onNextTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return QuizResult();
-                      }));
+                      if (currentQuestionIndex < subjectQuestions.length - 1) {
+                        currentQuestionIndex++;
+                        selectedAnswerIndex = answersMap[currentQuestionIndex]!;
+                        setState(() {});
+                      }
+                      // else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //       const SnackBar(content: Text("Savollar tamom")));
+                      // }
                     },
-                    onPreviousTap: () {},
+                    onPreviousTap: () {
+                      if (currentQuestionIndex > 0) {
+                        currentQuestionIndex--;
+                        selectedAnswerIndex = answersMap[currentQuestionIndex]!;
+                        setState(() {});
+                      }
+                      // else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //       const SnackBar(content: Text("Bu 1- savol")));
+                      // }
+                    },
                   )
                 ],
               ),
