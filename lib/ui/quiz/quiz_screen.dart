@@ -5,6 +5,7 @@ import 'package:n8_default_project/ui/quiz/widgets/answer_item.dart';
 import 'package:n8_default_project/ui/quiz/widgets/bottom_buttons_view.dart';
 import 'package:n8_default_project/ui/quiz/widgets/quiz_appbar.dart';
 import 'package:n8_default_project/ui/quiz/widgets/quiz_screen_top.dart';
+import 'package:n8_default_project/ui/quiz_result/quiz_result.dart';
 import 'package:n8_default_project/utils/colors.dart';
 import 'package:n8_default_project/utils/utility_functions.dart';
 
@@ -21,13 +22,13 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-
   List<QuestionModel> subjectQuestions = [];
 
   int currentQuestionIndex = 0;
   int selectedAnswerIndex = 0;
 
   Map<int, int> answersMap = {};
+  List<bool> result = [];
 
   @override
   void initState() {
@@ -44,12 +45,58 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery
+        .of(context)
+        .size
+        .width;
+    double height = MediaQuery
+        .of(context)
+        .size
+        .height;
     return Scaffold(
       appBar: QuizAppBar(
         onSubmitTap: () {
-
+          answersMap.forEach((key, value) {
+            if (value == 1) {
+              if (widget.subject.questions[key].trueAnswer ==
+                  widget.subject.questions[key].answer1) {
+                result.add(true);
+              } else {
+                result.add(false);
+              }
+            }
+            else if (value == 2) {
+              if (widget.subject.questions[key].trueAnswer ==
+                  widget.subject.questions[key].answer2) {
+                result.add(true);
+              } else {
+                result.add(false);
+              }
+            }
+            else if (value == 3) {
+              if (widget.subject.questions[key].trueAnswer ==
+                  widget.subject.questions[key].answer3) {
+                result.add(true);
+              } else {
+                result.add(false);
+              }
+            }
+            else if (value == 4) {
+              if (widget.subject.questions[key].trueAnswer ==
+                  widget.subject.questions[key].answer4) {
+                result.add(true);
+              } else {
+                result.add(false);
+              }
+            }
+            else if (value == 0){
+              result.add(false);
+            }
+          });
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (BuildContext context) {
+            return QuizResult(result: result,);
+          }));
         },
         onTap: () {
           Navigator.pop(context);
@@ -84,7 +131,8 @@ class _QuizScreenState extends State<QuizScreen> {
                         const SizedBox(height: 12),
                         Text(
                           subjectQuestions[currentQuestionIndex].questionText,
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .titleMedium!
                               .copyWith(fontSize: 15),
@@ -93,7 +141,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           isSelected: selectedAnswerIndex == 1,
                           variantName: "A.",
                           answerText:
-                              subjectQuestions[currentQuestionIndex].answer1,
+                          subjectQuestions[currentQuestionIndex].answer1,
                           onTap: () {
                             setState(() {
                               selectedAnswerIndex = 1;
@@ -106,7 +154,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           isSelected: selectedAnswerIndex == 2,
                           variantName: "B.",
                           answerText:
-                              subjectQuestions[currentQuestionIndex].answer2,
+                          subjectQuestions[currentQuestionIndex].answer2,
                           onTap: () {
                             setState(() {
                               selectedAnswerIndex = 2;
@@ -119,7 +167,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           isSelected: selectedAnswerIndex == 3,
                           variantName: "C.",
                           answerText:
-                              subjectQuestions[currentQuestionIndex].answer3,
+                          subjectQuestions[currentQuestionIndex].answer3,
                           onTap: () {
                             setState(() {
                               selectedAnswerIndex = 3;
@@ -132,7 +180,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           isSelected: selectedAnswerIndex == 4,
                           variantName: "D.",
                           answerText:
-                              subjectQuestions[currentQuestionIndex].answer4,
+                          subjectQuestions[currentQuestionIndex].answer4,
                           onTap: () {
                             setState(() {
                               selectedAnswerIndex = 4;
@@ -146,7 +194,7 @@ class _QuizScreenState extends State<QuizScreen> {
                   ),
                   BottomButtonViews(
                     onNextTapVisibility:
-                        !(currentQuestionIndex == subjectQuestions.length - 1),
+                    !(currentQuestionIndex == subjectQuestions.length - 1),
                     onPreviousTapVisibility: !(currentQuestionIndex == 0),
                     onNextTap: () {
                       if (currentQuestionIndex < subjectQuestions.length - 1) {

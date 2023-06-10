@@ -41,7 +41,7 @@ class TestResultView extends StatelessWidget {
                     ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: "passed",
+                    text: trueAnswersCount~/(totalQuestionCount/100)>=50?"passed":"not passed",
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                         fontWeight: FontWeight.w500, color: AppColors.C_6FCF97),
                   ),
@@ -53,7 +53,7 @@ class TestResultView extends StatelessWidget {
                         ),
                   ),
                   TextSpan(
-                    text: "80%",
+                    text: "${trueAnswersCount~/(totalQuestionCount/100)}%",
                     style: Theme.of(context).textTheme.titleSmall!.copyWith(
                         fontWeight: FontWeight.w500, color: AppColors.C_0E81B4),
                   ),

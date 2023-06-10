@@ -11,13 +11,28 @@ import 'package:n8_default_project/utils/colors.dart';
 import '../widgets/global_appbar.dart';
 
 class QuizResult extends StatefulWidget {
-  const QuizResult({Key? key}) : super(key: key);
+  QuizResult({Key? key, required this.result}) : super(key: key);
+  List<bool> result;
 
   @override
   State<QuizResult> createState() => _QuizResultState();
 }
 
 class _QuizResultState extends State<QuizResult> {
+  int treuAnswerCount=0;
+  int falseAnswerCoun=0;
+
+  @override
+  void initState() {
+    widget.result.forEach((element) {
+      if (element){
+        treuAnswerCount++;
+      }else{
+        falseAnswerCoun++;
+      }
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +54,14 @@ class _QuizResultState extends State<QuizResult> {
                   subTitle: "Maths / Real Numbers",
                 ),
                 const SizedBox(height: 19),
-                const TestResultView(
-                  totalQuestionCount: 12,
-                  trueAnswersCount: 8,
+                TestResultView(
+                  totalQuestionCount: widget.result.length,
+                  trueAnswersCount: treuAnswerCount,
                 ),
                 const SizedBox(height: 19),
-                const ResultCountView(
-                  countFalse: 4,
-                  countTrue: 5,
+                ResultCountView(
+                  countFalse: falseAnswerCoun,
+                  countTrue: treuAnswerCount,
                 ),
                 const SizedBox(height: 19),
                 const ResultTimeView(
